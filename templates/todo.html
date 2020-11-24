@@ -1,0 +1,43 @@
+{% extends "basetemplate.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row p-3"></div>    
+    <form action="/add_tarefa" method="POST">
+        <div class="row p-2"> 
+            <div class="col-2"></div>
+            <div class="col-8">
+                <input type="text" id="inputEmail" name = "tarefa" class="form-control" placeholder="Nova Tarefa" required autofocus>
+            </div>
+        </div> 
+        <div class="row p-2"> 
+            <div class="col-4"></div>
+            <div class="col-4">
+                <input type="submit" value="Adicionar Tarefa" class="btn btn-sm btn-primary btn-block">
+            </div>
+        </div> 
+    </form>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Tarefas</td>
+                <th>Completar</td>
+            </tr>
+                {%for tarefa in tarefas%}
+                    <tr>
+                        <td>{{tarefa[2]}}</td>
+                        <td class = "text-right">
+                            <form action="/completar_tarefa" method="POST">
+                                <input name = "tarefa_id" type="text" value={{tarefa[0]}} hidden="true">
+                                <input  class="btn btn-success" type="submit" value="Completar">
+                            </form> 
+                        </td>
+                    </tr>
+                {%endfor%}
+        </thead>
+    </table>
+</div>
+
+{% endblock %}

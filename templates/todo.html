@@ -1,7 +1,16 @@
 {% extends "basetemplate.html" %}
 {% block nav %}
     {%if user%}
-        <div>{{user}}</div>
+    <div class="dropdown">
+        <button class="btn btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{user}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/">Sair</a>
+          <a class="dropdown-item" href="/mudar_senha">Mudar Senha</a>
+        </div>
+      </div>
+    
     {%endif%}
 {% endblock %}
 {% block content %}

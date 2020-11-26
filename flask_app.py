@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from login_functions import add_acount, login, recupera_senha
+from login_functions import add_acount, login, recupera_senha, alterar_senha
 from db_functions import get_data, update_data
 from send_email import send_email
 
@@ -60,7 +60,10 @@ def recuperar_senha():
             send_email(user_email, subject, msg)
             return render_template ("recuperarsenha.html", message = "Nova senha enviada")
     else:
-        return render_template ("recuperarsenha.html")
+        if user[0] == "":
+            return redirect("/")
+        else:
+            return render_template ("recuperarsenha.html")
 
 
 @app.route("/add_tarefa", methods = ["POST"])
@@ -84,6 +87,22 @@ def delete_tarefa():
     sql = "DELETE FROM tarefas WHERE tarefa_id = {}".format(tarefa_id)
     update_data(sql)
     return redirect("todo")
+
+
+@app.route("/mudar_senha", methods = ["GET","POST"])
+def mudar_senha():
+    if request.method == "GET":
+        if user[0] == "":
+            return redirect("/")
+        else:
+            return render_template("mudar_senha.html", user=user[0])
+    else:
+        pwd_atual = request.form.get("password_atual")
+        pwd_novo_1 = request.form.get("novo_password_1")
+        pwd_novo_2 = request.form.get("novo_password_2")
+
+        result = alterar_senha(user[0], pwd_atual, pwd_novo_1, pwd_novo_2)
+        return render_template("mudar_senha.html", user=user[0], message= result)
 
 
 if __name__ == '__main__':

@@ -33,7 +33,7 @@ def login(email, pwd):
         else:
             return "Senha inválida"
 
-def recupera_senha(email):
+def recupera_senha(email): 
     sql = "SELECT email, pwd FROM accounts WHERE email = " + "'" + email + "'"
     result = get_data(sql)
     if len(result) == 0:
@@ -43,9 +43,24 @@ def recupera_senha(email):
         new_pwd = generate_password_hash(randon_pwd)
         sql = "UPDATE accounts SET pwd='{}' WHERE email = '{}'".format(new_pwd, email)
         update_data(sql)
-        #send password to email provided
         return randon_pwd
-        
+
+
+def alterar_senha(email, pwd_atual, pwd_novo_1, pwd_novo_2):
+    #check email and pwd
+    result = login(email, pwd_atual)
+    if result == "sucess":
+        #check if new passords provided  match
+        if pwd_novo_1 == pwd_novo_2:
+            new_pwd = generate_password_hash(pwd_novo_1)
+            sql = "UPDATE accounts SET pwd='{}' WHERE email = '{}'".format(new_pwd, email)
+            update_data(sql)
+            return "Password alterado com sucesso."
+        else:
+            return "Password novos são diferentes."
+    else:
+        return "Password atual é invalido."
+               
         
 def get_random_alphanumeric_string(length):
     letters_and_digits = string.ascii_letters + string.digits

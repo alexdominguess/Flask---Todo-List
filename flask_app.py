@@ -5,7 +5,7 @@ from send_email import send_email
 
 
 app= Flask(__name__)
-app.secret_key = "Nj!fxX<LI=[$\\}3,^`j];vS4-%De!;k0n9MQze7I&_4gLcERq[!|yS]XCTRdblocQ=*)Rz"
+app.secret_key = "your secrete key"
 
 @app.route("/", methods = ["GET", "POST"])
 def home():

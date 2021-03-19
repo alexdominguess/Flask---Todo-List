@@ -1,10 +1,9 @@
-import sqlite3
 from datetime import datetime
 from db_functions import get_data, update_data
-from flask import Flask
 from werkzeug.security import check_password_hash, generate_password_hash
 import random
 import string
+
 
 def add_acount(email, pwd):
     sql = "SELECT email FROM accounts WHERE email = " + "'" + email + "'"
@@ -17,7 +16,7 @@ def add_acount(email, pwd):
         return "Cadastro realizado com sucesso"
     else:
         return "Email já cadastrado"
-        
+
 
 def login(email, pwd):
     sql = "SELECT email, pwd FROM accounts WHERE email = " + "'" + email + "'"
@@ -33,7 +32,8 @@ def login(email, pwd):
         else:
             return "Senha inválida"
 
-def recupera_senha(email): 
+
+def recupera_senha(email):
     sql = "SELECT email, pwd FROM accounts WHERE email = " + "'" + email + "'"
     result = get_data(sql)
     if len(result) == 0:
@@ -47,10 +47,10 @@ def recupera_senha(email):
 
 
 def alterar_senha(email, pwd_atual, pwd_novo_1, pwd_novo_2):
-    #check email and pwd
+    # check email and pwd
     result = login(email, pwd_atual)
     if result == "sucess":
-        #check if new passords provided  match
+        # check if new passords provided  match
         if pwd_novo_1 == pwd_novo_2:
             new_pwd = generate_password_hash(pwd_novo_1)
             sql = "UPDATE accounts SET pwd='{}' WHERE email = '{}'".format(new_pwd, email)
@@ -60,8 +60,8 @@ def alterar_senha(email, pwd_atual, pwd_novo_1, pwd_novo_2):
             return "Password novos são diferentes."
     else:
         return "Password atual é invalido."
-               
-        
+
+
 def get_random_alphanumeric_string(length):
     letters_and_digits = string.ascii_letters + string.digits
     result_str = ''.join((random.choice(letters_and_digits) for i in range(length)))
